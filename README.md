@@ -1,4 +1,4 @@
-# Prediksi Segmen Pelanggan — Deployment (Streamlit)
+# Prediksi Segmen Pelanggan 
 
 Aplikasi ini adalah tahap **Deployment** dari proyek CRISP-DM *Implementasi Clustering
 untuk Menemukan Pola pada Data* (dataset `marketing_campaign.csv`), menggunakan model
