@@ -1,9 +1,3 @@
-"""
-Aplikasi Streamlit - Prediksi Segmen Pelanggan (K-Means Clustering)
-Tugas Mandiri: Implementasi Clustering dengan Metodologi CRISP-DM
-Firza Aliyah - 10123455 - Universitas Gunadarma
-"""
-
 import joblib
 import numpy as np
 import pandas as pd
@@ -11,12 +5,10 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-# =========================================================
 # KONFIGURASI HALAMAN
-# =========================================================
 st.set_page_config(
     page_title="Prediksi Segmen Pelanggan",
-    page_icon="🛍️",
+    page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -40,15 +32,12 @@ FEATURE_LABELS = {
 }
 
 PERSONA_STYLE = [
-    {"label": "Pelanggan Hemat", "emoji": "🌱", "color": "#22c55e"},
-    {"label": "Pelanggan Menengah", "emoji": "🛒", "color": "#3b82f6"},
-    {"label": "Pelanggan Loyal", "emoji": "⭐", "color": "#a855f7"},
-    {"label": "Pelanggan Bernilai Tinggi", "emoji": "💎", "color": "#f59e0b"},
+    {"label": "Pelanggan Hemat", "color": "#22c55e"},
+    {"label": "Pelanggan Menengah", "color": "#3b82f6"},
+    {"label": "Pelanggan Loyal", "color": "#a855f7"},
+    {"label": "Pelanggan Bernilai Tinggi", "color": "#f59e0b"},
 ]
-
-# =========================================================
 # CUSTOM CSS
-# =========================================================
 st.markdown(
     """
     <style>
@@ -97,9 +86,6 @@ st.markdown(
         color: white;
         margin-top: 0.5rem;
     }
-    .persona-card .emoji {
-        font-size: 3rem;
-    }
     .persona-card .title {
         font-size: 1.5rem;
         font-weight: 700;
@@ -121,10 +107,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
-# =========================================================
 # LOAD DATA & MODEL
-# =========================================================
 @st.cache_resource
 def load_artifacts():
     scaler = joblib.load("scaler_pelanggan.joblib")
@@ -162,36 +145,30 @@ scaler, model = load_artifacts()
 profile = load_cluster_profile()
 persona_map = build_persona_map(profile) if profile is not None else {}
 
-# =========================================================
 # HERO HEADER
-# =========================================================
 st.markdown(
     """
     <div class="hero">
-        <h1>🛍️ Prediksi Segmen Pelanggan</h1>
-        <p>Demo deployment model <b>K-Means Clustering</b> — proyek CRISP-DM untuk menemukan
-        pola tersembunyi pada data pelanggan Marketing Campaign.</p>
+        <h1>Prediksi Segmen Pelanggan</h1>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# =========================================================
 # SIDEBAR - INPUT
-# =========================================================
 with st.sidebar:
-    st.header("🧮 Input Data Pelanggan")
+    st.header("Input Data Pelanggan")
     st.caption("Isi karakteristik pelanggan untuk memprediksi segmennya.")
 
-    income = st.slider("💰 Income (pendapatan tahunan)", 0, 150000, 60000, step=1000)
-    recency = st.slider("⏱️ Recency (hari sejak transaksi terakhir)", 0, 100, 20, step=1)
-    total_mnt = st.slider("🛒 TotalMnt (total pengeluaran)", 0, 2600, 800, step=10)
-    total_purchases = st.slider("🧾 TotalPurchases (total transaksi)", 0, 40, 15, step=1)
-    num_deals = st.slider("🏷️ NumDealsPurchases (pembelian via diskon)", 0, 15, 2, step=1)
-    num_web_visits = st.slider("🌐 NumWebVisitsMonth (kunjungan web/bulan)", 0, 20, 5, step=1)
+    income = st.number_input("Income (pendapatan tahunan)", min_value=0, value=60000, step=1000)
+    recency = st.number_input("Recency (hari sejak transaksi terakhir)", min_value=0, value=20, step=1)
+    total_mnt = st.number_input("TotalMnt (total pengeluaran)", min_value=0, value=800, step=10)
+    total_purchases = st.number_input("TotalPurchases (total transaksi)", min_value=0, value=15, step=1)
+    num_deals = st.number_input("NumDealsPurchases (pembelian via diskon)", min_value=0, value=2, step=1)
+    num_web_visits = st.number_input("NumWebVisitsMonth (kunjungan web/bulan)", min_value=0, value=5, step=1)
 
     st.markdown("---")
-    predict_clicked = st.button("🔮 Prediksi Segmen", type="primary", use_container_width=True)
+    predict_clicked = st.button("Prediksi Segmen", type="primary", use_container_width=True)
 
     st.markdown("---")
     st.caption(
@@ -199,10 +176,8 @@ with st.sidebar:
         "Universitas Gunadarma"
     )
 
-# =========================================================
 # TABS
-# =========================================================
-tab_predict, tab_explore = st.tabs(["🔮 Prediksi", "📊 Eksplorasi Cluster"])
+tab_predict, tab_explore = st.tabs(["Prediksi", "Eksplorasi Cluster"])
 
 input_values = [income, recency, total_mnt, total_purchases, num_deals, num_web_visits]
 
@@ -219,7 +194,6 @@ with tab_predict:
             st.markdown(
                 f"""
                 <div class="persona-card" style="background: linear-gradient(135deg, {style['color']}cc, {style['color']}55);">
-                    <div class="emoji">{style['emoji']}</div>
                     <div class="title">{style['label']}</div>
                     <div>Cluster {cluster}</div>
                 </div>
@@ -243,7 +217,7 @@ with tab_predict:
                     )
 
         if profile is not None:
-            st.markdown("##### 📌 Perbandingan dengan Rata-rata Cluster")
+            st.markdown("##### Perbandingan dengan Rata-rata Cluster")
             row = profile[profile["KMeans_Cluster"] == cluster].iloc[0]
 
             radar_categories = ["Income", "TotalMnt", "TotalPurchases", "NumDealsPurchases", "NumWebVisitsMonth"]
@@ -280,7 +254,7 @@ with tab_predict:
             )
             st.plotly_chart(fig, use_container_width=True)
     else:
-        st.info("👈 Isi data pelanggan di sidebar, lalu klik **Prediksi Segmen** untuk melihat hasilnya di sini.")
+        st.info("Isi data pelanggan di sidebar, lalu klik **Prediksi Segmen** untuk melihat hasilnya di sini.")
 
 with tab_explore:
     if profile is not None:
@@ -288,7 +262,7 @@ with tab_explore:
 
         display_profile = profile.copy()
         display_profile["Persona"] = display_profile["KMeans_Cluster"].map(
-            lambda c: f"{persona_map[c]['emoji']} {persona_map[c]['label']}"
+            lambda c: persona_map[c]['label']
         )
         cols_order = ["KMeans_Cluster", "Persona"] + FEATURES + ["Jumlah_Pelanggan"]
         st.dataframe(
@@ -345,9 +319,7 @@ with tab_explore:
     else:
         st.warning("File `cluster_profile.csv` tidak ditemukan di folder aplikasi.")
 
-# =========================================================
 # FOOTER
-# =========================================================
 st.markdown(
     """
     <div class="footer-note">
