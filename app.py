@@ -42,14 +42,14 @@ st.markdown(
     """
     <style>
     .stApp {
-        background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+        background: linear-gradient(180deg, #f8fafc 0%, #eef1f6 100%);
     }
     .hero {
         padding: 2rem 2rem 1.5rem 2rem;
         border-radius: 18px;
         background: linear-gradient(120deg, #6366f1 0%, #ec4899 100%);
         margin-bottom: 1.5rem;
-        box-shadow: 0 10px 30px rgba(99, 102, 241, 0.25);
+        box-shadow: 0 10px 30px rgba(99, 102, 241, 0.18);
     }
     .hero h1 {
         color: white;
@@ -57,25 +57,26 @@ st.markdown(
         margin-bottom: 0.3rem;
     }
     .hero p {
-        color: rgba(255,255,255,0.9);
+        color: rgba(255,255,255,0.92);
         font-size: 1rem;
         margin: 0;
     }
     .metric-card {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
+        background: #ffffff;
+        border: 1px solid rgba(15,23,42,0.08);
         border-radius: 14px;
         padding: 1rem 1.2rem;
         text-align: center;
+        box-shadow: 0 1px 3px rgba(15,23,42,0.04);
     }
     .metric-card .value {
         font-size: 1.6rem;
         font-weight: 700;
-        color: #f8fafc;
+        color: #0f172a;
     }
     .metric-card .label {
         font-size: 0.8rem;
-        color: #94a3b8;
+        color: #64748b;
         text-transform: uppercase;
         letter-spacing: 0.04em;
     }
@@ -97,10 +98,11 @@ st.markdown(
         font-size: 0.8rem;
         margin-top: 2rem;
         padding-top: 1rem;
-        border-top: 1px solid rgba(255,255,255,0.08);
+        border-top: 1px solid rgba(15,23,42,0.08);
     }
     section[data-testid="stSidebar"] {
-        background: #0b1120;
+        background: #ffffff;
+        border-right: 1px solid rgba(15,23,42,0.06);
     }
     </style>
     """,
@@ -193,7 +195,7 @@ with tab_predict:
         with col_persona:
             st.markdown(
                 f"""
-                <div class="persona-card" style="background: linear-gradient(135deg, {style['color']}cc, {style['color']}55);">
+                <div class="persona-card" style="background: linear-gradient(135deg, {style['color']}ee, {style['color']}bb);">
                     <div class="title">{style['label']}</div>
                     <div>Cluster {cluster}</div>
                 </div>
@@ -247,7 +249,7 @@ with tab_predict:
             fig.update_layout(
                 polar=dict(radialaxis=dict(visible=True, showticklabels=False, range=[0, 1])),
                 showlegend=True,
-                template="plotly_dark",
+                template="plotly_white",
                 paper_bgcolor="rgba(0,0,0,0)",
                 height=420,
                 margin=dict(t=30, b=30),
@@ -285,7 +287,7 @@ with tab_explore:
                 color_continuous_scale=["#6366f1", "#ec4899"],
             )
             fig_bar.update_traces(textposition="outside")
-            fig_bar.update_layout(template="plotly_dark", paper_bgcolor="rgba(0,0,0,0)", showlegend=False, height=380)
+            fig_bar.update_layout(template="plotly_white", paper_bgcolor="rgba(0,0,0,0)", showlegend=False, height=380)
             st.plotly_chart(fig_bar, use_container_width=True)
 
         with col_b:
@@ -299,7 +301,7 @@ with tab_explore:
                 title="Posisi Rata-rata Tiap Cluster",
                 color_continuous_scale=["#6366f1", "#ec4899"],
             )
-            fig_scatter.update_layout(template="plotly_dark", paper_bgcolor="rgba(0,0,0,0)", showlegend=False, height=380)
+            fig_scatter.update_layout(template="plotly_white", paper_bgcolor="rgba(0,0,0,0)", showlegend=False, height=380)
             st.plotly_chart(fig_scatter, use_container_width=True)
 
         st.markdown("##### Perbandingan Fitur Antar Cluster")
@@ -314,7 +316,7 @@ with tab_explore:
             color_continuous_scale=["#6366f1", "#ec4899"],
         )
         fig_feat.update_traces(textposition="outside")
-        fig_feat.update_layout(template="plotly_dark", paper_bgcolor="rgba(0,0,0,0)", showlegend=False, height=360)
+        fig_feat.update_layout(template="plotly_white", paper_bgcolor="rgba(0,0,0,0)", showlegend=False, height=360)
         st.plotly_chart(fig_feat, use_container_width=True)
     else:
         st.warning("File `cluster_profile.csv` tidak ditemukan di folder aplikasi.")
